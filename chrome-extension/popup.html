@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 320px; 
+      min-height: 400px; /* Let it grow naturally if needed */
+      max-height: 580px; /* But keep it under 600px Chrome limit */
+      margin: 0; 
+      padding: 16px; 
+      background: #080c14; color: #c8d6e5;
+      font-family: 'Segoe UI', -apple-system, sans-serif;
+      overflow-x: hidden; 
+      overflow-y: auto; /* Internal scroll only when it hits max-height */
+    }
+    .header {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+      padding-bottom: 12px; border-bottom: 1px solid #1a2940;
+    }
+    .header img { width: 28px; height: 28px; border-radius: 6px; }
+    .header h1 {
+      font-family: 'Courier New', monospace; font-size: 16px; font-weight: 700;
+      background: linear-gradient(135deg, #00f0ff, #0aff9d); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .btn {
+      width: 100%; padding: 12px; border: 1px solid #00f0ff; background: transparent;
+      color: #00f0ff; font-family: 'Courier New', monospace; font-size: 13px;
+      font-weight: 700; letter-spacing: 2px; border-radius: 6px; cursor: pointer;
+      transition: all 0.3s; text-transform: uppercase;
+    }
+    .btn:hover:not(:disabled) { background: rgba(0,240,255,0.08); box-shadow: 0 0 20px rgba(0,240,255,0.15); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn.secondary { border-color: #0aff9d; color: #0aff9d; font-size: 11px; padding: 8px; margin-top: 6px; }
+    .btn.quick-login { border-color: rgba(255,170,0,0.5); color: #ffaa00; margin-top: 0; }
+    .btn.quick-login:hover:not(:disabled) { background: rgba(255,170,0,0.08); box-shadow: 0 0 20px rgba(255,170,0,0.15); }
+    .status { font-size: 11px; text-align: center; margin-top: 8px; color: #5e7290; min-height: 16px; }
+    .status.error { color: #ff3d71; }
+    .status.polling { color: #0aff9d; }
+    #result, #codeSection { display: none; margin-top: 12px; padding: 10px; background: rgba(0,240,255,0.04); border: 1px solid #1a2940; border-radius: 8px; }
+    #result.show, #codeSection.show { display: block; }
+    .info-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; line-height: 2; }
+    .info-row label { color: #5e7290; }
+    .info-row span { font-family: 'Courier New', monospace; color: #00f0ff; }
+    .copy-btn {
+      padding: 2px 8px; border: 1px solid #1a2940; background: transparent; color: #5e7290;
+      font-size: 10px; border-radius: 3px; cursor: pointer; font-family: 'Courier New', monospace;
+    }
+    .copy-btn:hover { color: #00f0ff; border-color: #00f0ff; }
+    #codeSection .code-value {
+      font-size: 26px; font-weight: 700; text-align: center; color: #0aff9d;
+      font-family: 'Courier New', monospace; letter-spacing: 4px; margin: 6px 0;
+    }
+    #codeSection .code-subject { font-size: 10px; color: #5e7290; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .toggle-advanced {
+      display: flex; align-items: center; gap: 6px; margin-top: 12px; padding: 8px 0; cursor: pointer;
+      color: #5e7290; font-size: 11px; font-family: 'Courier New', monospace;
+      border: none; background: none; width: 100%;
+    }
+    .toggle-advanced:hover { color: #00f0ff; }
+    .toggle-arrow { transition: transform 0.2s; display: inline-block; }
+    .toggle-arrow.open { transform: rotate(90deg); }
+    .advanced-panel { display: none; margin-top: 6px; }
+    .advanced-panel.show { display: block; }
+    .setting-row { margin-bottom: 8px; }
+    .setting-row label { display: block; font-size: 10px; color: #5e7290; margin-bottom: 3px; font-family: 'Courier New', monospace; text-transform: uppercase; letter-spacing: 0.5px; }
+    .setting-row input {
+      width: 100%; padding: 8px 10px; border: 1px solid #1a2940; border-radius: 4px;
+      background: rgba(0,240,255,0.04); color: #c8d6e5; font-size: 12px;
+      font-family: 'Courier New', monospace;
+    }
+    .setting-row input:focus { outline: none; border-color: rgba(0,240,255,0.3); }
+    .footer {
+      text-align: center; font-size: 9px; color: #3a4f6a; margin-top: 12px;
+      font-family: 'Courier New', monospace; letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="icons/icon128.png" alt="icon">
+    <h1>MAILSCOOL</h1>
+  </div>
+  <div class="body">
+    <button class="btn" id="createBtn" data-i18n="createBtn">⚡ CREATE TEMP MAILBOX</button>
+    <button class="btn secondary" id="fillBtn" style="display:none" data-i18n="fillBtn">📋 AUTO-FILL TO PAGE</button>
+
+    <div id="result">
+      <div class="info-row"><label data-i18n="labelEmail">Email</label><span id="resultEmail"></span><button class="copy-btn" id="copyEmail" data-i18n="copy">Copy</button></div>
+      <div class="info-row"><label data-i18n="labelPass">Pass</label><span id="resultPass"></span><button class="copy-btn" id="copyPass" data-i18n="copy">Copy</button></div>
+      <div style="display:flex;gap:6px;margin-top:8px">
+        <a class="btn quick-login" id="openInboxBtn" target="_blank" style="display:inline-block; text-align:center; text-decoration:none; font-size:10px;padding:7px;letter-spacing:1px; line-height:1.2;" data-i18n="openInbox">📬 OPEN INBOX</a>
+      </div>
+    </div>
+
+    <div id="codeSection">
+      <div style="text-align:center;font-size:9px;color:#5e7290;text-transform:uppercase;letter-spacing:1px" data-i18n="newMessage">NEW MESSAGE</div>
+      <div class="code-value" id="codeValue">—</div>
+      <div class="code-subject" id="codeSubject"></div>
+    </div>
+
+    <div id="status" class="status"></div>
+
+    <button class="toggle-advanced" id="toggleAdvanced">
+      <span class="toggle-arrow" id="toggleArrow">▶</span>
+      <span data-i18n="advancedToggle">Custom Server / API Key</span>
+    </button>
+    <div class="advanced-panel" id="advancedPanel">
+      <div class="setting-row">
+        <label data-i18n="labelServer">Server URL</label>
+        <input id="apiUrl" value="https://mails.cool" />
+      </div>
+      <div class="setting-row">
+        <label data-i18n="labelApiKey">API Key (optional)</label>
+        <input id="apiKey" type="password" placeholder="sk_..." />
+      </div>
+      <div style="font-size: 9px; color: #3a4f6a; line-height: 1.4; margin-bottom: 6px" data-i18n="apiHint">With API Key → /api/mailboxes (auth). Without → /mailbox/register (public)</div>
+    </div>
+
+    <div class="footer">MailsCool Chrome Extension v1.0.0</div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

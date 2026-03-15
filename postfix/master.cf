@@ -1,0 +1,12 @@
+# Postfix master.cf - 服务配置
+# ===================================
+
+# SMTP 入站
+smtp      inet  n       -       n       -       -       smtpd
+
+# Postfix 内部日志服务（3.7+ 必需）
+postlog   unix-dgram n  -       n       -       1       postlogd
+
+# 邮件 pipe 投递到 Go 后端
+mailer-pipe unix  -       n       n       -       10      pipe
+  flags=DRqu user=nobody argv=/usr/local/bin/mail-receiver

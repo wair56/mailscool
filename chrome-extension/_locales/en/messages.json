@@ -1,0 +1,114 @@
+{
+  "extName": {
+    "message": "MailsCool — Disposable Email",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "One-click disposable email with auto-fill, in-page widget & verification code polling.",
+    "description": "Extension description"
+  },
+  "createBtn": {
+    "message": "⚡ CREATE TEMP MAILBOX",
+    "description": "Main create button"
+  },
+  "fillBtn": {
+    "message": "📋 AUTO-FILL TO PAGE",
+    "description": "Fill email to page button"
+  },
+  "labelEmail": {
+    "message": "Email",
+    "description": "Email label"
+  },
+  "labelPass": {
+    "message": "Pass",
+    "description": "Password label"
+  },
+  "copy": {
+    "message": "Copy",
+    "description": "Copy button"
+  },
+  "copied": {
+    "message": "✓",
+    "description": "Copied feedback"
+  },
+  "openInbox": {
+    "message": "📬 OPEN INBOX",
+    "description": "Open inbox button"
+  },
+  "newMessage": {
+    "message": "NEW MESSAGE",
+    "description": "New message header"
+  },
+  "advancedToggle": {
+    "message": "Custom Server / API Key",
+    "description": "Toggle advanced settings"
+  },
+  "labelServer": {
+    "message": "Server URL",
+    "description": "Server URL label"
+  },
+  "labelApiKey": {
+    "message": "API Key (optional)",
+    "description": "API key label"
+  },
+  "apiHint": {
+    "message": "With API Key → /api/mailboxes (auth). Without → /mailbox/register (public)",
+    "description": "API hint text"
+  },
+  "creating": {
+    "message": "Creating temporary mailbox...",
+    "description": "Status: creating"
+  },
+  "autoFilled": {
+    "message": "✅ Email auto-filled! Waiting for verification code...",
+    "description": "Status: auto filled"
+  },
+  "emailFilled": {
+    "message": "📧 Email filled into page",
+    "description": "Status: email filled"
+  },
+  "watching": {
+    "message": "🔍 Watching for verification code",
+    "description": "Status: polling"
+  },
+  "codeFound": {
+    "message": "✅ Code found and auto-filled!",
+    "description": "Status: code found"
+  },
+  "newMail": {
+    "message": "✅ New mail received! Open inbox to view.",
+    "description": "Status: new mail"
+  },
+  "pollTimeout": {
+    "message": "⏰ Polling timeout (5min). Click to retry.",
+    "description": "Status: timeout"
+  },
+  "newMailBadge": {
+    "message": "NEW MAIL",
+    "description": "Badge text for new mail"
+  },
+  "widgetTitle": {
+    "message": "Click to generate a temp email",
+    "description": "In-page widget tooltip"
+  },
+  "widgetSuccess": {
+    "message": "⚡ New email created and filled!",
+    "description": "Widget toast: new email"
+  },
+  "widgetExisting": {
+    "message": "📧 Current email filled!",
+    "description": "Widget toast: existing email"
+  },
+  "toastCopied": {
+    "message": "📧 Email auto-filled!",
+    "description": "Toast after auto-fill"
+  },
+  "fillEmail": {
+    "message": "📧 Email filled: ",
+    "description": "Toast when email is filled into page fields"
+  },
+  "fillCode": {
+    "message": "🔑 Code filled: ",
+    "description": "Toast when verification code is filled into page fields"
+  }
+}

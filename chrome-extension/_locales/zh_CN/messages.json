@@ -1,0 +1,86 @@
+{
+  "extName": {
+    "message": "MailsCool — 一次性临时邮箱"
+  },
+  "extDescription": {
+    "message": "一键创建临时邮箱，自动填充到网页，自动捕获验证码。"
+  },
+  "createBtn": {
+    "message": "⚡ 创建临时邮箱"
+  },
+  "fillBtn": {
+    "message": "📋 自动填充到页面"
+  },
+  "labelEmail": {
+    "message": "邮箱"
+  },
+  "labelPass": {
+    "message": "密码"
+  },
+  "copy": {
+    "message": "复制"
+  },
+  "copied": {
+    "message": "✓ 已复制"
+  },
+  "openInbox": {
+    "message": "📬 打开收件箱"
+  },
+  "newMessage": {
+    "message": "新邮件"
+  },
+  "advancedToggle": {
+    "message": "自定义服务器 / API 密钥"
+  },
+  "labelServer": {
+    "message": "服务器地址"
+  },
+  "labelApiKey": {
+    "message": "API 密钥 (可选)"
+  },
+  "apiHint": {
+    "message": "有 API Key → /api/mailboxes（认证）。没有 → /mailbox/register（公开）"
+  },
+  "creating": {
+    "message": "正在创建临时邮箱..."
+  },
+  "autoFilled": {
+    "message": "✅ 邮箱已自动填入！等待验证码..."
+  },
+  "emailFilled": {
+    "message": "📧 邮箱已填充到页面"
+  },
+  "watching": {
+    "message": "🔍 正在监控验证码"
+  },
+  "codeFound": {
+    "message": "✅ 验证码已找到并自动填入！"
+  },
+  "newMail": {
+    "message": "✅ 收到新邮件！请打开收件箱查看。"
+  },
+  "pollTimeout": {
+    "message": "⏰ 轮询超时 (5分钟)。点击重试。"
+  },
+  "newMailBadge": {
+    "message": "新邮件"
+  },
+  "widgetTitle": {
+    "message": "点击生成临时邮箱"
+  },
+  "widgetSuccess": {
+    "message": "⚡ 新邮箱已创建并填入！"
+  },
+  "widgetExisting": {
+    "message": "📧 已使用当前邮箱填入！"
+  },
+  "toastCopied": {
+    "message": "📧 邮箱已自动填入！"
+  },
+  "fillEmail": {
+    "message": "📧 邮箱已填入: "
+  },
+  "fillCode": {
+    "message": "🔑 验证码已填入: "
+  }
+}

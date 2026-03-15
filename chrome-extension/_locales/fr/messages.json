@@ -1,0 +1,86 @@
+{
+  "extName": {
+    "message": "MailsCool — E-mail Jetable"
+  },
+  "extDescription": {
+    "message": "Création d'e-mail temporaire en un clic, remplissage auto et capture de code de vérification."
+  },
+  "createBtn": {
+    "message": "⚡ CRÉER UN E-MAIL TEMPORAIRE"
+  },
+  "fillBtn": {
+    "message": "📋 REMPLIR AUTOMATIQUEMENT"
+  },
+  "labelEmail": {
+    "message": "E-mail"
+  },
+  "labelPass": {
+    "message": "Mot de passe"
+  },
+  "copy": {
+    "message": "Copier"
+  },
+  "copied": {
+    "message": "✓ Copié"
+  },
+  "openInbox": {
+    "message": "📬 OUVRIR LA BOÎTE"
+  },
+  "newMessage": {
+    "message": "NOUVEAU MESSAGE"
+  },
+  "advancedToggle": {
+    "message": "Serveur / Clé API personnalisés"
+  },
+  "labelServer": {
+    "message": "URL du serveur"
+  },
+  "labelApiKey": {
+    "message": "Clé API (optionnel)"
+  },
+  "apiHint": {
+    "message": "Avec clé API → /api/mailboxes (auth). Sans → /mailbox/register (public)"
+  },
+  "creating": {
+    "message": "Création de l'e-mail temporaire..."
+  },
+  "autoFilled": {
+    "message": "✅ E-mail rempli ! En attente du code de vérification..."
+  },
+  "emailFilled": {
+    "message": "📧 E-mail rempli dans la page"
+  },
+  "watching": {
+    "message": "🔍 Surveillance du code de vérification"
+  },
+  "codeFound": {
+    "message": "✅ Code trouvé et rempli automatiquement !"
+  },
+  "newMail": {
+    "message": "✅ Nouveau message reçu ! Ouvrez la boîte pour le voir."
+  },
+  "pollTimeout": {
+    "message": "⏰ Délai dépassé (5 min). Cliquez pour réessayer."
+  },
+  "newMailBadge": {
+    "message": "NOUVEAU"
+  },
+  "widgetTitle": {
+    "message": "Cliquez pour générer un e-mail temporaire"
+  },
+  "widgetSuccess": {
+    "message": "⚡ Nouvel e-mail créé et rempli !"
+  },
+  "widgetExisting": {
+    "message": "📧 E-mail actuel rempli !"
+  },
+  "toastCopied": {
+    "message": "📧 E-mail rempli automatiquement !"
+  },
+  "fillEmail": {
+    "message": "📧 E-mail rempli : "
+  },
+  "fillCode": {
+    "message": "🔑 Code rempli : "
+  }
+}

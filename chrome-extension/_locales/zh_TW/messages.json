@@ -1,0 +1,86 @@
+{
+  "extName": {
+    "message": "MailsCool — 一次性臨時郵箱"
+  },
+  "extDescription": {
+    "message": "一鍵建立臨時郵箱，自動填入網頁，自動擷取驗證碼。"
+  },
+  "createBtn": {
+    "message": "⚡ 建立臨時郵箱"
+  },
+  "fillBtn": {
+    "message": "📋 自動填入頁面"
+  },
+  "labelEmail": {
+    "message": "信箱"
+  },
+  "labelPass": {
+    "message": "密碼"
+  },
+  "copy": {
+    "message": "複製"
+  },
+  "copied": {
+    "message": "✓ 已複製"
+  },
+  "openInbox": {
+    "message": "📬 開啟收件匣"
+  },
+  "newMessage": {
+    "message": "新郵件"
+  },
+  "advancedToggle": {
+    "message": "自訂伺服器 / API 金鑰"
+  },
+  "labelServer": {
+    "message": "伺服器網址"
+  },
+  "labelApiKey": {
+    "message": "API 金鑰 (選填)"
+  },
+  "apiHint": {
+    "message": "有 API Key → /api/mailboxes（驗證）。沒有 → /mailbox/register（公開）"
+  },
+  "creating": {
+    "message": "正在建立臨時郵箱..."
+  },
+  "autoFilled": {
+    "message": "✅ 信箱已自動填入！等待驗證碼..."
+  },
+  "emailFilled": {
+    "message": "📧 信箱已填入頁面"
+  },
+  "watching": {
+    "message": "🔍 正在監控驗證碼"
+  },
+  "codeFound": {
+    "message": "✅ 驗證碼已找到並自動填入！"
+  },
+  "newMail": {
+    "message": "✅ 收到新郵件！請開啟收件匣查看。"
+  },
+  "pollTimeout": {
+    "message": "⏰ 輪詢逾時 (5分鐘)。點擊重試。"
+  },
+  "newMailBadge": {
+    "message": "新郵件"
+  },
+  "widgetTitle": {
+    "message": "點擊產生臨時郵箱"
+  },
+  "widgetSuccess": {
+    "message": "⚡ 新信箱已建立並填入！"
+  },
+  "widgetExisting": {
+    "message": "📧 已使用目前信箱填入！"
+  },
+  "toastCopied": {
+    "message": "📧 信箱已自動填入！"
+  },
+  "fillEmail": {
+    "message": "📧 信箱已填入: "
+  },
+  "fillCode": {
+    "message": "🔑 驗證碼已填入: "
+  }
+}

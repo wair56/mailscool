@@ -1,0 +1,86 @@
+{
+  "extName": {
+    "message": "MailsCool — بريد مؤقت"
+  },
+  "extDescription": {
+    "message": "إنشاء بريد مؤقت بنقرة واحدة، تعبئة تلقائية، والتقاط رمز التحقق."
+  },
+  "createBtn": {
+    "message": "⚡ إنشاء بريد مؤقت"
+  },
+  "fillBtn": {
+    "message": "📋 تعبئة تلقائية في الصفحة"
+  },
+  "labelEmail": {
+    "message": "البريد"
+  },
+  "labelPass": {
+    "message": "كلمة المرور"
+  },
+  "copy": {
+    "message": "نسخ"
+  },
+  "copied": {
+    "message": "✓ تم النسخ"
+  },
+  "openInbox": {
+    "message": "📬 فتح البريد الوارد"
+  },
+  "newMessage": {
+    "message": "رسالة جديدة"
+  },
+  "advancedToggle": {
+    "message": "خادم مخصص / مفتاح API"
+  },
+  "labelServer": {
+    "message": "عنوان الخادم"
+  },
+  "labelApiKey": {
+    "message": "مفتاح API (اختياري)"
+  },
+  "apiHint": {
+    "message": "مع مفتاح API ← /api/mailboxes (مصادقة). بدون ← /mailbox/register (عام)"
+  },
+  "creating": {
+    "message": "جاري إنشاء بريد مؤقت..."
+  },
+  "autoFilled": {
+    "message": "✅ تم ملء البريد! في انتظار رمز التحقق..."
+  },
+  "emailFilled": {
+    "message": "📧 تم ملء البريد في الصفحة"
+  },
+  "watching": {
+    "message": "🔍 مراقبة رمز التحقق"
+  },
+  "codeFound": {
+    "message": "✅ تم العثور على الرمز وملؤه تلقائياً!"
+  },
+  "newMail": {
+    "message": "✅ تم استلام بريد جديد! افتح البريد الوارد للعرض."
+  },
+  "pollTimeout": {
+    "message": "⏰ انتهت مهلة الانتظار (5 دقائق). انقر لإعادة المحاولة."
+  },
+  "newMailBadge": {
+    "message": "جديد"
+  },
+  "widgetTitle": {
+    "message": "انقر لإنشاء بريد مؤقت"
+  },
+  "widgetSuccess": {
+    "message": "⚡ تم إنشاء بريد جديد وملؤه!"
+  },
+  "widgetExisting": {
+    "message": "📧 تم ملء البريد الحالي!"
+  },
+  "toastCopied": {
+    "message": "📧 تم ملء البريد تلقائياً!"
+  },
+  "fillEmail": {
+    "message": "📧 تم ملء البريد: "
+  },
+  "fillCode": {
+    "message": "🔑 تم ملء الرمز: "
+  }
+}

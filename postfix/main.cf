@@ -1,0 +1,44 @@
+# Postfix 主配置 - 纯收件模式
+# ===================================
+
+# 基本设置
+smtpd_banner = $myhostname ESMTP
+biff = no
+append_dot_mydomain = no
+
+# 主机名（部署时修改）
+myhostname = mail.example.com
+mydomain = example.com
+myorigin = $mydomain
+
+# 网络设置
+inet_interfaces = all
+inet_protocols = ipv4
+
+# 仅接收，不发信
+mydestination =
+default_transport = error
+relay_transport = error
+
+# 虚拟域名（Catch-all 模式）
+virtual_mailbox_domains = /etc/postfix/virtual_domains
+virtual_transport = mailer-pipe
+
+# 接收限制
+smtpd_recipient_restrictions =
+    permit_mynetworks,
+    reject_unauth_destination
+
+# 安全设置
+smtpd_helo_required = yes
+disable_vrfy_command = yes
+
+# 大小限制（10MB）
+message_size_limit = 10485760
+
+# 队列设置
+maximal_queue_lifetime = 1d
+bounce_queue_lifetime = 1d
+
+# 日志
+maillog_file = /dev/stdout

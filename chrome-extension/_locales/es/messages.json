@@ -1,0 +1,86 @@
+{
+  "extName": {
+    "message": "MailsCool — Correo Temporal"
+  },
+  "extDescription": {
+    "message": "Creación de correo temporal con un clic, autocompletado y captura de código de verificación."
+  },
+  "createBtn": {
+    "message": "⚡ CREAR CORREO TEMPORAL"
+  },
+  "fillBtn": {
+    "message": "📋 AUTOCOMPLETAR EN PÁGINA"
+  },
+  "labelEmail": {
+    "message": "Correo"
+  },
+  "labelPass": {
+    "message": "Clave"
+  },
+  "copy": {
+    "message": "Copiar"
+  },
+  "copied": {
+    "message": "✓ Copiado"
+  },
+  "openInbox": {
+    "message": "📬 ABRIR BANDEJA"
+  },
+  "newMessage": {
+    "message": "NUEVO MENSAJE"
+  },
+  "advancedToggle": {
+    "message": "Servidor / API Key personalizados"
+  },
+  "labelServer": {
+    "message": "URL del servidor"
+  },
+  "labelApiKey": {
+    "message": "API Key (opcional)"
+  },
+  "apiHint": {
+    "message": "Con API Key → /api/mailboxes (auth). Sin → /mailbox/register (público)"
+  },
+  "creating": {
+    "message": "Creando correo temporal..."
+  },
+  "autoFilled": {
+    "message": "✅ ¡Correo autocompletado! Esperando código de verificación..."
+  },
+  "emailFilled": {
+    "message": "📧 Correo rellenado en la página"
+  },
+  "watching": {
+    "message": "🔍 Buscando código de verificación"
+  },
+  "codeFound": {
+    "message": "✅ ¡Código encontrado y autocompletado!"
+  },
+  "newMail": {
+    "message": "✅ ¡Nuevo correo recibido! Abre la bandeja para verlo."
+  },
+  "pollTimeout": {
+    "message": "⏰ Tiempo de espera agotado (5 min). Haz clic para reintentar."
+  },
+  "newMailBadge": {
+    "message": "NUEVO"
+  },
+  "widgetTitle": {
+    "message": "Clic para generar correo temporal"
+  },
+  "widgetSuccess": {
+    "message": "⚡ ¡Nuevo correo creado y rellenado!"
+  },
+  "widgetExisting": {
+    "message": "📧 ¡Correo actual rellenado!"
+  },
+  "toastCopied": {
+    "message": "📧 ¡Correo autocompletado!"
+  },
+  "fillEmail": {
+    "message": "📧 Correo rellenado: "
+  },
+  "fillCode": {
+    "message": "🔑 Código rellenado: "
+  }
+}

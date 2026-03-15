@@ -1,0 +1,224 @@
+<template>
+  <div>
+    <!-- 筛选栏 -->
+    <div class="filter-bar">
+      <n-select v-model:value="filters.domain_id" :options="domainOptions" :placeholder="t('email_filter_domain')"
+        clearable style="width: 180px" size="small" @update:value="handleSearch" />
+      <n-input v-model:value="filters.to" :placeholder="t('email_filter_to')" clearable style="width: 200px"
+        size="small" @keyup.enter="handleSearch" />
+      <n-input v-model:value="filters.from" :placeholder="t('email_filter_from')" clearable style="width: 180px"
+        size="small" @keyup.enter="handleSearch" />
+      <n-button type="primary" size="small" @click="handleSearch">{{ t('email_search') }}</n-button>
+      <n-button size="small" quaternary @click="resetFilters">{{ t('email_reset') }}</n-button>
+      <span class="email-count">{{ total }} {{ locale === 'zh' ? '封' : 'emails' }}</span>
+    </div>
+
+    <n-data-table :columns="columns" :data="emails" :loading="loading" :bordered="false"
+      :row-class-name="rowClassName" :row-props="rowProps" size="small" />
+
+    <div style="display: flex; justify-content: center; margin-top: 16px" v-if="total > size">
+      <n-pagination v-model:page="page" :page-count="Math.ceil(total / size)"
+        :page-size="size" show-quick-jumper @update:page="fetchData" />
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, h, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { NButton, NTag, useMessage } from 'naive-ui'
+import { listEmails, listDomains, toggleEmailStar } from '../api'
+import { useI18n } from '../i18n'
+
+const { t, locale } = useI18n()
+const route = useRoute()
+const router = useRouter()
+const emails = ref([])
+const loading = ref(false)
+const page = ref(1)
+const size = ref(20)
+const total = ref(0)
+const domainOptions = ref([])
+
+const filters = ref({ domain_id: null, to: '', from: '' })
+const RETENTION_DAYS = 7
+
+const columns = [
+  { title: 'ID', key: 'id', width: 60 },
+  {
+    title: '⭐', key: 'star', width: 45,
+    render: row => h(NButton, {
+      text: true, size: 'small',
+      style: { fontSize: '16px' },
+      onClick: (e) => { e.stopPropagation(); handleToggleStar(row) }
+    }, () => row.is_starred ? '⭐' : '☆')
+  },
+  {
+    title: () => t('email_recipient'), key: 'recipient', width: 220, ellipsis: { tooltip: true },
+    render: row => h('span', {
+      style: 'color: #4dd0e1; cursor: pointer; font-size: 13px',
+      onClick: (e) => {
+        e.stopPropagation()
+        filterByMailbox(row.recipient)
+      }
+    }, row.recipient)
+  },
+  { title: () => t('email_sender'), key: 'sender', width: 200, ellipsis: { tooltip: true },
+    render: row => h('span', {
+      style: 'font-size: 13px; color: var(--text-secondary); cursor: pointer',
+      onClick: (e) => {
+        e.stopPropagation()
+        filterBySender(row.sender)
+      }
+    }, row.sender)
+  },
+  {
+    title: () => t('email_subject'), key: 'subject', ellipsis: { tooltip: true },
+    render: row => h('span', { style: row.is_read ? { fontSize: '13px' } : { fontWeight: 600, fontSize: '13px' } }, row.subject || t('email_no_subject'))
+  },
+  {
+    title: () => t('email_code'), key: 'code', width: 100,
+    render: row => row.code ? h(NTag, { type: 'success', bordered: false, size: 'small' }, () => row.code) : h('span', { style: 'color: var(--text-secondary); font-size: 12px' }, '-')
+  },
+  {
+    title: () => t('email_time'), key: 'received_at', width: 145,
+    render: row => h('span', { style: 'font-size: 12px; color: var(--text-secondary)' }, new Date(row.received_at).toLocaleString(locale.value === 'zh' ? 'zh-CN' : 'en-US'))
+  },
+  {
+    title: () => t('email_expires'), key: 'expires', width: 100,
+    render: row => {
+      if (row.is_starred) return h('span', { style: 'font-size: 12px; color: #00c853' }, t('email_never'))
+      const received = new Date(row.received_at)
+      const expires = new Date(received.getTime() + RETENTION_DAYS * 86400000)
+      const now = new Date()
+      const hoursLeft = (expires - now) / 3600000
+      const color = hoursLeft < 0 ? '#e74c3c' : hoursLeft < 24 ? '#f39c12' : 'var(--text-secondary)'
+      const text = hoursLeft < 0 ? t('email_expired') : `${Math.ceil(hoursLeft / 24)}${t('email_days')}`
+      return h('span', { style: `font-size: 12px; color: ${color}` }, text)
+    }
+  },
+]
+
+function rowClassName(row) {
+  return row.is_read ? 'table-row read' : 'table-row unread'
+}
+
+function rowProps(row) {
+  return {
+    style: 'cursor: pointer',
+    onClick: () => {
+      router.push({ name: 'EmailDetail', params: { id: row.id } })
+    }
+  }
+}
+
+function extractEmailAddress(recipient) {
+  if (!recipient) return ''
+  const bracketMatch = recipient.match(/<([^>]+@[^>]+)>/)
+  if (bracketMatch?.[1]) return bracketMatch[1]
+
+  const plainMatch = recipient.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i)
+  return plainMatch?.[0] || recipient
+}
+
+function filterByMailbox(recipient) {
+  filters.value.to = extractEmailAddress(recipient)
+  page.value = 1
+  fetchData()
+}
+
+function filterBySender(sender) {
+  filters.value.from = extractEmailAddress(sender)
+  page.value = 1
+  fetchData()
+}
+
+function handleSearch() {
+  page.value = 1
+  fetchData()
+}
+
+function resetFilters() {
+  filters.value = { domain_id: null, to: '', from: '' }
+  page.value = 1
+  fetchData()
+}
+
+function initFiltersFromRoute() {
+  const q = route.query
+
+  if (q.domain_id !== undefined) {
+    const parsed = Number(q.domain_id)
+    filters.value.domain_id = Number.isNaN(parsed) ? null : parsed
+  }
+  if (typeof q.to === 'string') {
+    filters.value.to = q.to
+  }
+  if (typeof q.from === 'string') {
+    filters.value.from = q.from
+  }
+  if (q.page !== undefined) {
+    const parsed = Number(q.page)
+    if (!Number.isNaN(parsed) && parsed > 0) page.value = parsed
+  }
+}
+
+async function fetchDomains() {
+  try {
+    const { data } = await listDomains()
+    domainOptions.value = data.data.map(d => ({ label: d.name, value: d.id }))
+  } catch {}
+}
+
+async function fetchData() {
+  loading.value = true
+  try {
+    const params = { page: page.value, size: size.value }
+    if (filters.value.domain_id) params.domain_id = filters.value.domain_id
+    if (filters.value.to) params.to = filters.value.to
+    if (filters.value.from) params.from = filters.value.from
+
+    const { data } = await listEmails(params)
+    emails.value = data.data
+    total.value = data.total
+  } catch {} finally { loading.value = false }
+}
+
+onMounted(() => {
+  initFiltersFromRoute()
+  fetchDomains()
+  fetchData()
+})
+
+async function handleToggleStar(row) {
+  try {
+    const { data } = await toggleEmailStar(row.id)
+    row.is_starred = data.is_starred
+  } catch {}
+}
+</script>
+
+<style scoped>
+.filter-bar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 10px 16px;
+  background: var(--bg-card);
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  flex-wrap: wrap;
+}
+
+.email-count {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+:deep(.table-row) { background: var(--bg-card); }
+:deep(.table-row:hover td) { background: var(--bg-hover) !important; }
+:deep(.table-row.unread td:first-child) { border-left: 3px solid #00f0ff; }
+</style>

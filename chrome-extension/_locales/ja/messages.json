@@ -1,0 +1,86 @@
+{
+  "extName": {
+    "message": "MailsCool — 使い捨てメール"
+  },
+  "extDescription": {
+    "message": "ワンクリックで使い捨てメールを作成、自動入力、認証コード自動取得。"
+  },
+  "createBtn": {
+    "message": "⚡ 使い捨てメール作成"
+  },
+  "fillBtn": {
+    "message": "📋 ページに自動入力"
+  },
+  "labelEmail": {
+    "message": "メール"
+  },
+  "labelPass": {
+    "message": "パスワード"
+  },
+  "copy": {
+    "message": "コピー"
+  },
+  "copied": {
+    "message": "✓ コピー済"
+  },
+  "openInbox": {
+    "message": "📬 受信箱を開く"
+  },
+  "newMessage": {
+    "message": "新着メール"
+  },
+  "advancedToggle": {
+    "message": "カスタムサーバー / API キー"
+  },
+  "labelServer": {
+    "message": "サーバー URL"
+  },
+  "labelApiKey": {
+    "message": "API キー (任意)"
+  },
+  "apiHint": {
+    "message": "API Key あり → /api/mailboxes（認証）。なし → /mailbox/register（公開）"
+  },
+  "creating": {
+    "message": "使い捨てメールを作成中..."
+  },
+  "autoFilled": {
+    "message": "✅ メール自動入力済み！認証コードを待機中..."
+  },
+  "emailFilled": {
+    "message": "📧 メールをページに入力しました"
+  },
+  "watching": {
+    "message": "🔍 認証コードを監視中"
+  },
+  "codeFound": {
+    "message": "✅ 認証コードが見つかり、自動入力しました！"
+  },
+  "newMail": {
+    "message": "✅ 新着メールあり！受信箱を開いて確認してください。"
+  },
+  "pollTimeout": {
+    "message": "⏰ ポーリングタイムアウト (5分)。クリックで再試行。"
+  },
+  "newMailBadge": {
+    "message": "新着"
+  },
+  "widgetTitle": {
+    "message": "クリックして使い捨てメールを生成"
+  },
+  "widgetSuccess": {
+    "message": "⚡ 新しいメールを作成して入力しました！"
+  },
+  "widgetExisting": {
+    "message": "📧 現在のメールを入力しました！"
+  },
+  "toastCopied": {
+    "message": "📧 メールが自動入力されました！"
+  },
+  "fillEmail": {
+    "message": "📧 メール入力済み: "
+  },
+  "fillCode": {
+    "message": "🔑 認証コード入力済み: "
+  }
+}

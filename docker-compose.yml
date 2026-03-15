@@ -1,0 +1,30 @@
+services:
+  # Go 后端 + Vue 前端（单容器）
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend
+    container_name: mailer-backend
+    restart: unless-stopped
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    volumes:
+      - mailer-data:/data
+    environment:
+      - DB_PATH=/data/mailer.db
+      - JWT_SECRET=${JWT_SECRET:?请在 .env 中设置 JWT_SECRET}
+      - LISTEN_ADDR=:8080
+      - MAIL_RETENTION_DAYS=${MAIL_RETENTION_DAYS:-7}
+      - DEFAULT_ADMIN_USER=${DEFAULT_ADMIN_USER:-admin}
+      - DEFAULT_ADMIN_PASS=${DEFAULT_ADMIN_PASS:?请在 .env 中设置 DEFAULT_ADMIN_PASS}
+      - CORS_ORIGINS=${CORS_ORIGINS:-https://mails.cool,http://localhost:5173,http://127.0.0.1:5173}
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  mailer-data:
+    driver: local
