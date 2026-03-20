@@ -46,17 +46,25 @@ func cleanupExpiredEmails() {
 
 	// 清理过期临时邮箱及其邮件
 	expiredRows, err := database.DB.Query("SELECT email FROM mailboxes WHERE is_temp = 1 AND expires_at IS NOT NULL AND expires_at < datetime('now')")
+	var expiredEmails []string
 	if err == nil && expiredRows != nil {
-		defer expiredRows.Close()
-		for expiredRows.Next() {
-			var email string
-			if err := expiredRows.Scan(&email); err != nil {
-				continue
+		func() {
+			defer expiredRows.Close()
+			for expiredRows.Next() {
+				var email string
+				if err := expiredRows.Scan(&email); err != nil {
+					continue
+				}
+				expiredEmails = append(expiredEmails, email)
 			}
-			// 精确匹配：recipient 已统一为纯邮箱地址
-			database.DB.Exec("DELETE FROM emails WHERE recipient = ?", email)
-		}
+		}()
 	}
+
+	for _, email := range expiredEmails {
+		// 精确匹配：recipient 已统一为纯邮箱地址
+		database.DB.Exec("DELETE FROM emails WHERE recipient = ?", email)
+	}
+
 	expResult, _ := database.DB.Exec("DELETE FROM mailboxes WHERE is_temp = 1 AND expires_at IS NOT NULL AND expires_at < datetime('now')")
 	if expResult != nil {
 		expAffected, _ := expResult.RowsAffected()

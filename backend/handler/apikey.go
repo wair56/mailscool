@@ -44,28 +44,30 @@ func ListApiKeys(c *gin.Context) {
 
 	// 第一步：收集所有 key（避免嵌套查询导致 SQLite 死锁）
 	var keys []database.ApiKey
-	for rows.Next() {
-		var k database.ApiKey
-		var isActive, isSystem int
-		var keyPlain string
-		if err := rows.Scan(&k.ID, &k.KeyPrefix, &keyPlain, &k.Name, &k.IPWhitelist, &k.RateLimit, &isActive, &isSystem, &k.CreatedAt, &k.ExpiresAt, &k.CreatedBy, &k.CreatedByName); err != nil {
-			continue
-		}
-		k.IsActive = isActive == 1
-		k.IsSystem = isSystem == 1
-		if keyPlain != "" {
-			// 解密 key_plain
-			if decrypted, err := config.Decrypt(keyPlain); err == nil {
-				k.KeyPrefix = decrypted
-			} else {
-				k.KeyPrefix = keyPlain
+	func() {
+		defer rows.Close()
+		for rows.Next() {
+			var k database.ApiKey
+			var isActive, isSystem int
+			var keyPlain string
+			if err := rows.Scan(&k.ID, &k.KeyPrefix, &keyPlain, &k.Name, &k.IPWhitelist, &k.RateLimit, &isActive, &isSystem, &k.CreatedAt, &k.ExpiresAt, &k.CreatedBy, &k.CreatedByName); err != nil {
+				continue
 			}
+			k.IsActive = isActive == 1
+			k.IsSystem = isSystem == 1
+			if keyPlain != "" {
+				// 解密 key_plain
+				if decrypted, err := config.Decrypt(keyPlain); err == nil {
+					k.KeyPrefix = decrypted
+				} else {
+					k.KeyPrefix = keyPlain
+				}
+			}
+			keys = append(keys, k)
 		}
-		keys = append(keys, k)
-	}
-	rows.Close()
+	}()
 
-	// 第二步：为每个 key 加载关联域名及统计数据（rows 已关闭，不会死锁）
+	// 第二步：为每个 key 加载关联域名及统计数据（rows 已被彻底关闭，不会死锁）
 	for i := range keys {
 		domainRows, _ := database.DB.Query(
 			`SELECT d.id, d.name, d.is_active FROM domains d 
@@ -73,14 +75,16 @@ func ListApiKeys(c *gin.Context) {
 			 WHERE akd.api_key_id = ?`, keys[i].ID,
 		)
 		if domainRows != nil {
-			for domainRows.Next() {
-				var d database.Domain
-				var da int
-				domainRows.Scan(&d.ID, &d.Name, &da)
-				d.IsActive = da == 1
-				keys[i].Domains = append(keys[i].Domains, d)
-			}
-			domainRows.Close()
+			func() {
+				defer domainRows.Close()
+				for domainRows.Next() {
+					var d database.Domain
+					var da int
+					domainRows.Scan(&d.ID, &d.Name, &da)
+					d.IsActive = da == 1
+					keys[i].Domains = append(keys[i].Domains, d)
+				}
+			}()
 		}
 		if keys[i].Domains == nil {
 			keys[i].Domains = []database.Domain{}
