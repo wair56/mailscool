@@ -191,19 +191,23 @@ func GetSystemLogs(c *gin.Context) {
 		n = 200
 	}
 
-	logBufferMu.Lock()
-	defer logBufferMu.Unlock()
-
-	start := 0
-	if len(logBuffer) > n {
-		start = len(logBuffer) - n
-	}
-
 	var result strings.Builder
-	for _, line := range logBuffer[start:] {
-		result.WriteString(line)
-		result.WriteString("\n")
-	}
+
+	// 使用匿名函数限制锁的作用域
+	func() {
+		logBufferMu.Lock()
+		defer logBufferMu.Unlock()
+
+		start := 0
+		if len(logBuffer) > n {
+			start = len(logBuffer) - n
+		}
+
+		for _, line := range logBuffer[start:] {
+			result.WriteString(line)
+			result.WriteString("\n")
+		}
+	}()
 
 	c.JSON(http.StatusOK, gin.H{"data": result.String()})
 }

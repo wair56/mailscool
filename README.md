@@ -14,16 +14,16 @@
 
 **The Problem**: You need to receive emails programmatically — for account verification, email-based automation, or disposable inboxes. Existing solutions force you to:
 
-| Pain Point | Existing Services | MailsCool |
-|---|---|---|
-| **Pricing** | $15-50+/mo per domain, pay-per-email | **Free forever** (self-hosted) |
-| **Rate Limits** | 100-500 emails/day on free tiers | **Unlimited** — your server, your rules |
-| **Data Privacy** | Emails stored on 3rd-party servers | **Your server, your data, zero logging** |
-| **Vendor Lock-in** | Proprietary APIs, migration nightmares | **Open source**, standard REST API |
-| **Verification Codes** | Manual parsing or regex hacks | **Auto-extracted** in 10+ languages |
-| **Setup Complexity** | MX records + SMTP + TLS certs | **One-click** Cloudflare setup, zero SMTP |
-| **Catch-all** | Often paid add-on or unsupported | **Built-in** — any address, no pre-registration |
-| **Multi-tenant** | Separate accounts per domain | **One instance** manages all domains |
+| Pain Point             | Existing Services                      | MailsCool                                       |
+| ---------------------- | -------------------------------------- | ----------------------------------------------- |
+| **Pricing**            | $15-50+/mo per domain, pay-per-email   | **Free forever** (self-hosted)                  |
+| **Rate Limits**        | 100-500 emails/day on free tiers       | **Unlimited** — your server, your rules         |
+| **Data Privacy**       | Emails stored on 3rd-party servers     | **Your server, your data, zero logging**        |
+| **Vendor Lock-in**     | Proprietary APIs, migration nightmares | **Open source**, standard REST API              |
+| **Verification Codes** | Manual parsing or regex hacks          | **Auto-extracted** in 10+ languages             |
+| **Setup Complexity**   | MX records + SMTP + TLS certs          | **One-click** Cloudflare setup, zero SMTP       |
+| **Catch-all**          | Often paid add-on or unsupported       | **Built-in** — any address, no pre-registration |
+| **Multi-tenant**       | Separate accounts per domain           | **One instance** manages all domains            |
 
 ### 🚀 Core Value / 核心价值
 
@@ -43,16 +43,16 @@
 
 **痛点**：你需要通过程序接收邮件 — 用于账号验证、邮件自动化或一次性邮箱。但现有方案让你不得不面对：
 
-| 痛点 | 现有服务（Mailgun/Temp-mail等） | MailsCool |
-|---|---|---|
-| **费用** | 每域名 $15-50+/月，按信计费 | **永久免费**（自托管） |
-| **速率限制** | 免费版每天 100-500 封 | **无限制** — 你的服务器，你做主 |
-| **数据隐私** | 邮件存储在第三方服务器 | **你的服务器，你的数据，零日志** |
-| **供应商锁定** | 专有 API，迁移噩梦 | **开源**，标准 REST API |
-| **验证码提取** | 手动解析或正则 | **自动提取** 10+ 种语言 |
-| **配置复杂度** | MX 记录 + SMTP + TLS 证书 | **一键** Cloudflare 配置，零 SMTP |
-| **Catch-all** | 通常是付费附加功能 | **内置** — 任意地址，无需预创建 |
-| **多租户** | 每个域名独立账号 | **一个实例** 管理所有域名 |
+| 痛点           | 现有服务（Mailgun/Temp-mail等） | MailsCool                         |
+| -------------- | ------------------------------- | --------------------------------- |
+| **费用**       | 每域名 $15-50+/月，按信计费     | **永久免费**（自托管）            |
+| **速率限制**   | 免费版每天 100-500 封           | **无限制** — 你的服务器，你做主   |
+| **数据隐私**   | 邮件存储在第三方服务器          | **你的服务器，你的数据，零日志**  |
+| **供应商锁定** | 专有 API，迁移噩梦              | **开源**，标准 REST API           |
+| **验证码提取** | 手动解析或正则                  | **自动提取** 10+ 种语言           |
+| **配置复杂度** | MX 记录 + SMTP + TLS 证书       | **一键** Cloudflare 配置，零 SMTP |
+| **Catch-all**  | 通常是付费附加功能              | **内置** — 任意地址，无需预创建   |
+| **多租户**     | 每个域名独立账号                | **一个实例** 管理所有域名         |
 
 ### 🚀 核心价值
 
@@ -121,14 +121,14 @@
 
 ## 🏗 Tech Stack / 技术栈
 
-| Component | Technology |
-|-----------|-----------|
-| Backend | Go + Gin (single binary with embedded frontend) |
-| Frontend | Vue 3 + Naive UI (bilingual i18n) |
-| Database | SQLite (WAL mode, 64MB cache) |
-| Receiving | Cloudflare Email Routing + Worker (HTTP POST) |
-| Deploy | Docker (single container) / Bare metal |
-| HTTPS | Cloudflare Tunnel |
+| Component | Technology                                      |
+| --------- | ----------------------------------------------- |
+| Backend   | Go + Gin (single binary with embedded frontend) |
+| Frontend  | Vue 3 + Naive UI (bilingual i18n)               |
+| Database  | SQLite (WAL mode, 64MB cache)                   |
+| Receiving | Cloudflare Email Routing + Worker (HTTP POST)   |
+| Deploy    | Docker (single container) / Bare metal          |
+| HTTPS     | Cloudflare Tunnel                               |
 
 ## 🚀 Quick Start / 快速开始
 
@@ -201,14 +201,14 @@ systemctl enable --now cloudflared
 
 **Required CF API Token Permissions (6 permissions):**
 
-| Scope | Permission | Level |
-|-------|-----------|-------|
-| Zone | Zone | Read |
-| Zone | Zone Settings | Edit |
-| Zone | DNS | Edit |
-| Zone | Email Routing Rules | Edit |
-| Account | Workers Scripts | Edit |
-| Account | Email Routing Addresses | Edit |
+| Scope   | Permission              | Level |
+| ------- | ----------------------- | ----- |
+| Zone    | Zone                    | Read  |
+| Zone    | Zone Settings           | Edit  |
+| Zone    | DNS                     | Edit  |
+| Zone    | Email Routing Rules     | Edit  |
+| Account | Workers Scripts         | Edit  |
+| Account | Email Routing Addresses | Edit  |
 
 > 💡 Create token at [Cloudflare API Tokens](https://dash.cloudflare.com/profile/api-tokens) → **Create Custom Token**. Set Zone/Account Resources to **All zones / All accounts** (or specific domain).
 
@@ -228,11 +228,11 @@ export default {
     const resp = await fetch("https://mailer-api.your-domain.com/api/receive", {
       method: "POST",
       headers: {
-        "Authorization": "Bearer sk_your_api_key",
+        Authorization: "Bearer sk_your_api_key",
         "Content-Type": "application/octet-stream",
-        "X-Envelope-To": to
+        "X-Envelope-To": to,
       },
-      body: body
+      body: body,
     });
     const text = await resp.text();
     if (resp.ok) {
@@ -242,8 +242,8 @@ export default {
       console.log("⚠ Forward failed / 转发失败 | Status: " + resp.status);
       console.log("Response / 响应: " + text.substring(0, 200));
     }
-  }
-}
+  },
+};
 ```
 
 > ⚠️ Use `mailer-api.your-domain.com` (Tunnel URL), **NOT** `your-domain.com`, to avoid WAF blocking.
@@ -254,11 +254,11 @@ Then set **Email Routing → Routes** Catch-all to "Send to Worker".
 
 After enabling Email Routing (via one-click or manually), Cloudflare automatically creates:
 
-| Record | Name | Value | Status |
-|--------|------|-------|--------|
-| MX | your-domain.com | route{1,2,3}.mx.cloudflare.net. | Auto ✅ |
-| TXT | your-domain.com | v=spf1 include:_spf.mx.cloudflare.net ~all | Auto ✅ |
-| TXT | _dmarc.your-domain.com | v=DMARC1; p=none; | Auto (one-click) ✅ |
+| Record | Name                    | Value                                       | Status              |
+| ------ | ----------------------- | ------------------------------------------- | ------------------- |
+| MX     | your-domain.com         | route{1,2,3}.mx.cloudflare.net.             | Auto ✅             |
+| TXT    | your-domain.com         | v=spf1 include:\_spf.mx.cloudflare.net ~all | Auto ✅             |
+| TXT    | \_dmarc.your-domain.com | v=DMARC1; p=none;                           | Auto (one-click) ✅ |
 
 > The one-click setup also creates the DMARC record. If using manual setup, add it yourself via CF Dashboard → DNS.
 
@@ -359,15 +359,15 @@ curl -X POST -H "Authorization: Bearer <admin_jwt>" \
 
 ## ⚙️ Environment Variables / 环境变量
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `JWT_SECRET` | — | JWT signing key (**required**) |
-| `DB_PATH` | `/data/mailer.db` | SQLite database path |
-| `LISTEN_ADDR` | `:8080` | Listen address |
-| `MAIL_RETENTION_DAYS` | `7` | Email retention days (0 = no cleanup, starred exempt) |
-| `DEFAULT_ADMIN_USER` | `admin` | Initial super admin username |
-| `DEFAULT_ADMIN_PASS` | — | Initial super admin password (auto-generated if empty) |
-| `CORS_ORIGINS` | `*` | Allowed CORS origins (comma-separated) |
+| Variable              | Default           | Description                                            |
+| --------------------- | ----------------- | ------------------------------------------------------ |
+| `JWT_SECRET`          | —                 | JWT signing key (**required**)                         |
+| `DB_PATH`             | `/data/mailer.db` | SQLite database path                                   |
+| `LISTEN_ADDR`         | `:8080`           | Listen address                                         |
+| `MAIL_RETENTION_DAYS` | `7`               | Email retention days (0 = no cleanup, starred exempt)  |
+| `DEFAULT_ADMIN_USER`  | `admin`           | Initial super admin username                           |
+| `DEFAULT_ADMIN_PASS`  | —                 | Initial super admin password (auto-generated if empty) |
+| `CORS_ORIGINS`        | `*`               | Allowed CORS origins (comma-separated)                 |
 
 ## 📁 Project Structure / 项目结构
 
@@ -409,7 +409,7 @@ mailer/
 
 If you find MailsCool useful, consider buying me a coffee! 如果觉得好用，请我喝杯咖啡吧！
 
-[![Buy me a coffee](https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=☕&slug=399is&button_colour=0D1520&font_colour=00f0ff&font_family=Cookie&outline_colour=1a2940&coffee_colour=00f0ff)](https://www.buymeacoffee.com/399is)
+<a href="https://www.buymeacoffee.com/399is"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=399is&button_colour=0D1520&font_colour=00f0ff&font_family=Cookie&outline_colour=1a2940&coffee_colour=00f0ff" /></a>
 
 ## License
 

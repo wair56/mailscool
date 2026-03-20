@@ -291,6 +291,7 @@ func UpdateApiKey(c *gin.Context) {
 	if req.DomainIDs != nil {
 		tx, txErr := database.DB.Begin()
 		if txErr == nil {
+			defer tx.Rollback()
 			tx.Exec("DELETE FROM api_key_domains WHERE api_key_id = ?", id)
 			for _, did := range *req.DomainIDs {
 				tx.Exec("INSERT INTO api_key_domains (api_key_id, domain_id) VALUES (?, ?)", id, did)
