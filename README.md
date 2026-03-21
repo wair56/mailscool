@@ -407,9 +407,15 @@ mailer/
 
 ## ☕ Support / 支持
 
-If you find MailsCool useful, consider buying me a coffee! 如果觉得好用，请我喝杯咖啡吧！
+If you find this tool useful, consider buying me a coffee! 
+如果觉得本项目好用，请我喝杯咖啡吧！让创造力持续燃烧！🔥
 
-<a href="https://www.buymeacoffee.com/399is"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=399is&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
+<p align="center">
+  <img src="./BMC.png" width="260" alt="Buy Me A Coffee QR Code" style="margin-right: 20px" />
+  <img src="./wechat.png" width="260" alt="WeChat Pay QR Code" />
+</p>
+
+---
 
 ## License
 
