@@ -7,7 +7,7 @@
       </n-button>
     </div>
 
-    <n-data-table :columns="columns" :data="admins" :loading="loading" :bordered="false"
+    <n-data-table :columns="columns" :data="admins" :loading="loading" :bordered="false" :scroll-x="800"
       :row-class-name="() => 'table-row'" />
 
     <!-- 创建管理员对话框 -->

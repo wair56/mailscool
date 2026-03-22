@@ -11,7 +11,7 @@
     </div>
 
     <n-data-table :columns="columns" :data="logs" :loading="loading" :bordered="false"
-      :row-class-name="() => 'table-row'" />
+      :row-class-name="() => 'table-row'" :scroll-x="900" />
 
     <div style="display: flex; justify-content: center; margin-top: 16px" v-if="total > size">
       <n-pagination v-model:page="page" :page-count="Math.ceil(total / size)"
@@ -62,7 +62,7 @@ const columns = [
   },
   { title: () => t('audit_target'), key: 'target', ellipsis: { tooltip: true } },
   { title: () => t('audit_detail'), key: 'detail', ellipsis: { tooltip: true } },
-  { title: 'IP', key: 'ip', width: 140 },
+  { title: 'IP', key: 'ip', width: 140, ellipsis: { tooltip: true } },
   { title: () => t('audit_time'), key: 'created_at', width: 170,
     render: row => new Date(row.created_at).toLocaleString(locale.value === 'zh' ? 'zh-CN' : 'en-US')
   },

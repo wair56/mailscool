@@ -7,7 +7,7 @@
       <n-button type="primary" size="small" @click="showAddModal = true">{{ t('domain_add') }}</n-button>
     </div>
 
-    <n-data-table :columns="columns" :data="filteredDomains" :loading="loading" :bordered="false"
+    <n-data-table :columns="columns" :data="filteredDomains" :loading="loading" :bordered="false" :scroll-x="800"
       :row-class-name="() => 'table-row'" />
 
     <!-- 添加域名对话框 -->

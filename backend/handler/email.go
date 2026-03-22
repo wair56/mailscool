@@ -263,9 +263,15 @@ func AdminListEmails(c *gin.Context) {
 		where += " AND e.sender LIKE ?"
 		args = append(args, "%"+from+"%")
 	}
-	if senderDomain := c.Query("sender_domain"); senderDomain != "" {
-		where += " AND e.sender LIKE ?"
-		args = append(args, "%@"+senderDomain)
+	// 发件域名黑名单：排除特定域名的邮件
+	if excludeDomains := c.Query("exclude_domains"); excludeDomains != "" {
+		for _, d := range strings.Split(excludeDomains, ",") {
+			d = strings.TrimSpace(d)
+			if d != "" {
+				where += " AND e.sender NOT LIKE ?"
+				args = append(args, "%@"+d)
+			}
+		}
 	}
 	if c.Query("has_code") == "1" {
 		where += " AND e.extracted_code != ''"

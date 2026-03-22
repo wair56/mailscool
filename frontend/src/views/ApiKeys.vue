@@ -8,7 +8,7 @@
       <n-button type="primary" size="small" @click="showCreateModal = true">{{ t('apikey_create') }}</n-button>
     </div>
 
-    <n-data-table :columns="columns" :data="filteredKeys" :loading="loading" :bordered="false"
+    <n-data-table :columns="columns" :data="filteredKeys" :loading="loading" :bordered="false" :scroll-x="1000"
       :row-class-name="() => 'table-row'" />
 
     <!-- 创建 API Key 对话框 -->

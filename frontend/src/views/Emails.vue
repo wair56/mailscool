@@ -8,18 +8,27 @@
         size="small" @keyup.enter="handleSearch" />
       <n-input v-model:value="filters.from" :placeholder="t('email_filter_from')" clearable style="width: 150px"
         size="small" @keyup.enter="handleSearch" />
-      <n-input v-model:value="filters.sender_domain" :placeholder="locale === 'zh' ? '发件域名' : 'Sender Domain'"
-        clearable style="width: 150px" size="small" @keyup.enter="handleSearch" />
       <n-button type="primary" size="small" @click="handleSearch">{{ t('email_search') }}</n-button>
       <n-button size="small" quaternary @click="resetFilters">{{ t('email_reset') }}</n-button>
       <n-checkbox v-model:checked="filters.has_code" size="small" @update:checked="handleSearch">
         {{ locale === 'zh' ? '有验证码' : 'Has Code' }}
       </n-checkbox>
-      <span class="email-count">{{ total }} {{ locale === 'zh' ? '封' : 'emails' }}</span>
+      <span class="email-count">{{ total >= 0 ? total : '...' }} {{ locale === 'zh' ? '封' : 'emails' }}</span>
+    </div>
+
+    <!-- 黑名单域名 -->
+    <div class="blacklist-bar" v-if="excludeDomains.length > 0 || showBlacklistInput">
+      <span class="blacklist-label">{{ locale === 'zh' ? '🚫 屏蔽域名:' : '🚫 Blocked:' }}</span>
+      <n-tag v-for="(d, i) in excludeDomains" :key="d" closable size="small" type="error"
+        @close="removeExcludeDomain(i)" style="margin-right: 4px">{{ d }}</n-tag>
+      <n-input v-if="showBlacklistInput" v-model:value="blacklistInput" size="tiny"
+        :placeholder="locale === 'zh' ? '输入域名回车添加' : 'domain, Enter to add'"
+        style="width: 160px" @keyup.enter="addExcludeDomain" @blur="showBlacklistInput = false" ref="blacklistInputRef" />
+      <n-button v-else size="tiny" quaternary @click="showBlacklistInput = true">+</n-button>
     </div>
 
     <n-data-table :columns="columns" :data="emails" :loading="loading" :bordered="false"
-      :row-class-name="rowClassName" :row-props="rowProps" size="small" />
+      :row-class-name="rowClassName" :row-props="rowProps" size="small" :scroll-x="1000" />
 
     <div style="display: flex; justify-content: center; margin-top: 16px" v-if="total > size">
       <n-pagination v-model:page="page" :page-count="Math.ceil(total / size)"
@@ -45,8 +54,30 @@ const size = ref(20)
 const total = ref(0)
 const domainOptions = ref([])
 
-const filters = ref({ domain_id: null, to: '', from: '', sender_domain: '', has_code: false })
+const filters = ref({ domain_id: null, to: '', from: '', has_code: false })
+const excludeDomains = ref(JSON.parse(localStorage.getItem('email_exclude_domains') || '[]'))
+const showBlacklistInput = ref(false)
+const blacklistInput = ref('')
 const RETENTION_DAYS = 7
+
+function addExcludeDomain() {
+  const d = blacklistInput.value.trim().toLowerCase()
+  if (d && !excludeDomains.value.includes(d)) {
+    excludeDomains.value.push(d)
+    localStorage.setItem('email_exclude_domains', JSON.stringify(excludeDomains.value))
+    page.value = 1
+    fetchData()
+  }
+  blacklistInput.value = ''
+  showBlacklistInput.value = false
+}
+
+function removeExcludeDomain(index) {
+  excludeDomains.value.splice(index, 1)
+  localStorage.setItem('email_exclude_domains', JSON.stringify(excludeDomains.value))
+  page.value = 1
+  fetchData()
+}
 
 const columns = [
   { title: 'ID', key: 'id', width: 60 },
@@ -81,8 +112,9 @@ const columns = [
         onContextmenu: (e) => {
           e.preventDefault()
           e.stopPropagation()
-          if (domain) {
-            filters.value.sender_domain = domain
+          if (domain && !excludeDomains.value.includes(domain)) {
+            excludeDomains.value.push(domain)
+            localStorage.setItem('email_exclude_domains', JSON.stringify(excludeDomains.value))
             page.value = 1
             fetchData()
           }
@@ -157,7 +189,7 @@ function handleSearch() {
 }
 
 function resetFilters() {
-  filters.value = { domain_id: null, to: '', from: '', sender_domain: '', has_code: false }
+  filters.value = { domain_id: null, to: '', from: '', has_code: false }
   page.value = 1
   fetchData()
 }
@@ -195,8 +227,8 @@ async function fetchData() {
     if (filters.value.domain_id) params.domain_id = filters.value.domain_id
     if (filters.value.to) params.to = filters.value.to
     if (filters.value.from) params.from = filters.value.from
-    if (filters.value.sender_domain) params.sender_domain = filters.value.sender_domain
     if (filters.value.has_code) params.has_code = '1'
+    if (excludeDomains.value.length > 0) params.exclude_domains = excludeDomains.value.join(',')
 
     // Phase 1: 先加载数据（跳过 COUNT），立即展示
     const { data } = await listEmails({ ...params, skip_count: '1' })
@@ -229,12 +261,31 @@ async function handleToggleStar(row) {
   display: flex;
   gap: 10px;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
   padding: 10px 16px;
   background: var(--bg-card);
   border-radius: 10px;
   border: 1px solid var(--border-color);
   flex-wrap: wrap;
+}
+
+.blacklist-bar {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 6px 16px;
+  background: var(--bg-card);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  flex-wrap: wrap;
+  opacity: 0.85;
+}
+
+.blacklist-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-right: 4px;
 }
 
 .email-count {

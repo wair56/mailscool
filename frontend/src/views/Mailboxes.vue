@@ -9,7 +9,7 @@
       <n-button type="primary" size="small" @click="showCreate = true">{{ t('mailbox_create') }}</n-button>
     </div>
 
-    <n-data-table :columns="columns" :data="mailboxes" :loading="loading" :bordered="false" />
+    <n-data-table :columns="columns" :data="mailboxes" :loading="loading" :bordered="false" :scroll-x="1200" />
 
     <div style="display: flex; justify-content: center; margin-top: 16px" v-if="total > size">
       <n-pagination v-model:page="page" :page-count="Math.ceil(total / size)"
