@@ -3,13 +3,18 @@
     <!-- 筛选栏 -->
     <div class="filter-bar">
       <n-select v-model:value="filters.domain_id" :options="domainOptions" :placeholder="t('email_filter_domain')"
-        clearable style="width: 180px" size="small" @update:value="handleSearch" />
-      <n-input v-model:value="filters.to" :placeholder="t('email_filter_to')" clearable style="width: 200px"
+        clearable style="width: 150px" size="small" @update:value="handleSearch" />
+      <n-input v-model:value="filters.to" :placeholder="t('email_filter_to')" clearable style="width: 180px"
         size="small" @keyup.enter="handleSearch" />
-      <n-input v-model:value="filters.from" :placeholder="t('email_filter_from')" clearable style="width: 180px"
+      <n-input v-model:value="filters.from" :placeholder="t('email_filter_from')" clearable style="width: 150px"
         size="small" @keyup.enter="handleSearch" />
+      <n-input v-model:value="filters.sender_domain" :placeholder="locale === 'zh' ? '发件域名' : 'Sender Domain'"
+        clearable style="width: 150px" size="small" @keyup.enter="handleSearch" />
       <n-button type="primary" size="small" @click="handleSearch">{{ t('email_search') }}</n-button>
       <n-button size="small" quaternary @click="resetFilters">{{ t('email_reset') }}</n-button>
+      <n-checkbox v-model:checked="filters.has_code" size="small" @update:checked="handleSearch">
+        {{ locale === 'zh' ? '有验证码' : 'Has Code' }}
+      </n-checkbox>
       <span class="email-count">{{ total }} {{ locale === 'zh' ? '封' : 'emails' }}</span>
     </div>
 
@@ -26,7 +31,7 @@
 <script setup>
 import { ref, h, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { NButton, NTag, useMessage } from 'naive-ui'
+import { NButton, NTag, NCheckbox, useMessage } from 'naive-ui'
 import { listEmails, listDomains, toggleEmailStar } from '../api'
 import { useI18n } from '../i18n'
 
@@ -40,7 +45,7 @@ const size = ref(20)
 const total = ref(0)
 const domainOptions = ref([])
 
-const filters = ref({ domain_id: null, to: '', from: '' })
+const filters = ref({ domain_id: null, to: '', from: '', sender_domain: '', has_code: false })
 const RETENTION_DAYS = 7
 
 const columns = [
@@ -64,13 +69,26 @@ const columns = [
     }, row.recipient)
   },
   { title: () => t('email_sender'), key: 'sender', width: 200, ellipsis: { tooltip: true },
-    render: row => h('span', {
-      style: 'font-size: 13px; color: var(--text-secondary); cursor: pointer',
-      onClick: (e) => {
-        e.stopPropagation()
-        filterBySender(row.sender)
-      }
-    }, row.sender)
+    render: row => {
+      const addr = extractEmailAddress(row.sender)
+      const domain = addr.split('@')[1] || ''
+      return h('span', {
+        style: 'font-size: 13px; color: var(--text-secondary); cursor: pointer',
+        onClick: (e) => {
+          e.stopPropagation()
+          filterBySender(row.sender)
+        },
+        onContextmenu: (e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          if (domain) {
+            filters.value.sender_domain = domain
+            page.value = 1
+            fetchData()
+          }
+        }
+      }, row.sender)
+    }
   },
   {
     title: () => t('email_subject'), key: 'subject', ellipsis: { tooltip: true },
@@ -139,7 +157,7 @@ function handleSearch() {
 }
 
 function resetFilters() {
-  filters.value = { domain_id: null, to: '', from: '' }
+  filters.value = { domain_id: null, to: '', from: '', sender_domain: '', has_code: false }
   page.value = 1
   fetchData()
 }
@@ -177,6 +195,8 @@ async function fetchData() {
     if (filters.value.domain_id) params.domain_id = filters.value.domain_id
     if (filters.value.to) params.to = filters.value.to
     if (filters.value.from) params.from = filters.value.from
+    if (filters.value.sender_domain) params.sender_domain = filters.value.sender_domain
+    if (filters.value.has_code) params.has_code = '1'
 
     const { data } = await listEmails(params)
     emails.value = data.data

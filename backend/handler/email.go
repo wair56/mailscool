@@ -263,6 +263,13 @@ func AdminListEmails(c *gin.Context) {
 		where += " AND e.sender LIKE ?"
 		args = append(args, "%"+from+"%")
 	}
+	if senderDomain := c.Query("sender_domain"); senderDomain != "" {
+		where += " AND e.sender LIKE ?"
+		args = append(args, "%@"+senderDomain)
+	}
+	if c.Query("has_code") == "1" {
+		where += " AND e.extracted_code != ''"
+	}
 
 	var total int64
 	database.DB.QueryRow("SELECT COUNT(*) FROM emails e "+where, args...).Scan(&total)
